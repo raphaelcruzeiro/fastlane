@@ -293,7 +293,7 @@ module Sigh
         end
       else
         filter = { deviceClass: device_classes.join(",") }
-        return Spaceship::ConnectAPI::Device.all(filter: filter)
+        return Spaceship::ConnectAPI::Device.all()
       end
     end
 
