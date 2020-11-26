@@ -179,12 +179,15 @@ module Sigh
 
       UI.important("Creating new provisioning profile for '#{Sigh.config[:app_identifier]}' with name '#{name}' for '#{Sigh.config[:platform]}' platform")
 
+      device_ids = devices_to_use.map(&:id)
+      UI.message("Using these device ids: \n #{device_ids}")
+      
       profile = Spaceship::ConnectAPI::Profile.create(
         name: name,
         profile_type: profile_type,
         bundle_id_id: bundle_id.id,
         certificate_ids: certificates_to_use.map(&:id),
-        device_ids: devices_to_use.map(&:id),
+        device_ids: device_ids,
         template_name: Sigh.config[:template_name]
       )
 
@@ -282,6 +285,7 @@ module Sigh
                        when 'macos', 'catalyst'
                          [Spaceship::ConnectAPI::Device::DeviceClass::MAC]
                        end
+      UI.message("Using these device classes: \n #{device_classes}")
 
       if api_token
         return Spaceship::ConnectAPI::Device.all.select do |device|
